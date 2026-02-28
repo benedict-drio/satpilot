@@ -149,3 +149,56 @@
     processed-at: uint
   }
 )
+
+;; ============================================================================
+;; PRIVATE HELPER FUNCTIONS
+;; ============================================================================
+
+;; Calculate platform fee from amount
+(define-private (calculate-fee (amount uint))
+  (/ (* amount (var-get platform-fee-bps)) BPS_DENOMINATOR)
+)
+
+;; Check if contract is operational
+(define-private (is-operational)
+  (not (var-get contract-paused))
+)
+
+;; Check if caller is owner
+(define-private (is-owner)
+  (is-eq tx-sender (var-get contract-owner))
+)
+
+;; Check if invoice is expired
+(define-private (is-invoice-expired (expires-at uint))
+  (> stacks-block-height expires-at)
+)
+
+;; Get next invoice ID
+(define-private (get-next-invoice-id)
+  (let ((current-id (var-get invoice-nonce)))
+    (var-set invoice-nonce (+ current-id u1))
+    (+ current-id u1)
+  )
+)
+
+;; Get next refund ID
+(define-private (get-next-refund-id)
+  (let ((current-id (var-get refund-nonce)))
+    (var-set refund-nonce (+ current-id u1))
+    (+ current-id u1)
+  )
+)
+
+;; Safe subtraction (prevent underflow)
+(define-private (safe-sub (a uint) (b uint))
+  (if (>= a b) (- a b) u0)
+)
+
+;; ============================================================================
+;; AUTHORIZATION CHECKS
+;; ============================================================================
+
+(define-read-only (check-is-owner)
+  (ok (asserts! (is-owner) ERR_UNAUTHORIZED))
+)
