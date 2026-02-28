@@ -292,3 +292,47 @@
     (ok true)
   )
 )
+
+;; ============================================================================
+;; MERCHANT FUNCTIONS
+;; ============================================================================
+
+;; Register as a merchant
+(define-public (register-merchant 
+  (name (string-utf8 64))
+  (description (optional (string-utf8 256)))
+  (webhook-url (optional (string-utf8 256)))
+)
+  (let (
+    (caller tx-sender)
+    (new-id (+ (var-get merchant-count) u1))
+  )
+    (try! (check-is-operational))
+    (asserts! (is-none (map-get? merchants caller)) ERR_MERCHANT_EXISTS)
+    
+    (map-set merchants caller {
+      id: new-id,
+      name: name,
+      description: description,
+      webhook-url: webhook-url,
+      total-received: u0,
+      total-refunded: u0,
+      invoice-count: u0,
+      registered-at: stacks-block-height,
+      is-active: true,
+      is-verified: false
+    })
+    
+    (var-set merchant-count new-id)
+    
+    (print {
+      event: "merchant-registered",
+      merchant: caller,
+      id: new-id,
+      name: name,
+      block: stacks-block-height
+    })
+    
+    (ok new-id)
+  )
+)
