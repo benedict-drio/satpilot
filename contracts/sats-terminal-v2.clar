@@ -685,3 +685,53 @@
     u0
   )
 )
+
+;; Get individual payment record
+(define-read-only (get-invoice-payment (invoice-id uint) (payment-index uint))
+  (map-get? invoice-payments { invoice-id: invoice-id, payment-index: payment-index })
+)
+
+;; Get payment count for invoice
+(define-read-only (get-invoice-payment-count (invoice-id uint))
+  (default-to u0 (map-get? invoice-payment-counts invoice-id))
+)
+
+;; Get refund details
+(define-read-only (get-refund (refund-id uint))
+  (map-get? refunds refund-id)
+)
+
+;; Get platform statistics
+(define-read-only (get-platform-stats)
+  {
+    total-volume: (var-get total-volume),
+    total-invoices: (var-get total-invoices),
+    total-merchants: (var-get merchant-count),
+    total-fees-collected: (var-get total-fees-collected),
+    total-refunds: (var-get total-refunds)
+  }
+)
+
+;; Get contract configuration
+(define-read-only (get-contract-config)
+  {
+    owner: (var-get contract-owner),
+    pending-owner: (var-get pending-owner),
+    fee-recipient: (var-get fee-recipient),
+    platform-fee-bps: (var-get platform-fee-bps),
+    is-paused: (var-get contract-paused),
+    min-invoice-amount: MIN_INVOICE_AMOUNT,
+    max-invoice-amount: MAX_INVOICE_AMOUNT,
+    max-expiry-blocks: MAX_EXPIRY_BLOCKS
+  }
+)
+
+;; Check if contract is paused
+(define-read-only (is-paused)
+  (var-get contract-paused)
+)
+
+;; Get current invoice nonce
+(define-read-only (get-invoice-nonce)
+  (var-get invoice-nonce)
+)
