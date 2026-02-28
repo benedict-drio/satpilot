@@ -448,3 +448,96 @@
     (ok invoice-id)
   )
 )
+
+;; Pay an invoice (supports partial payments)
+(define-public (pay-invoice (invoice-id uint) (amount uint))
+  (let (
+    (invoice (unwrap! (map-get? invoices invoice-id) ERR_INVOICE_NOT_FOUND))
+    (merchant-data (unwrap! (map-get? merchants (get merchant invoice)) ERR_MERCHANT_NOT_FOUND))
+    (payer tx-sender)
+    (remaining (safe-sub (get amount invoice) (get amount-paid invoice)))
+    (fee (calculate-fee amount))
+    (merchant-amount (- amount fee))
+    (payment-count (default-to u0 (map-get? invoice-payment-counts invoice-id)))
+  )
+    (try! (check-is-operational))
+    
+    ;; Validations
+    (asserts! (not (is-eq payer (get merchant invoice))) ERR_SELF_PAYMENT)
+    (asserts! (get is-active merchant-data) ERR_MERCHANT_INACTIVE)
+    (asserts! (not (is-invoice-expired (get expires-at invoice))) ERR_INVOICE_EXPIRED)
+    (asserts! (or (is-eq (get status invoice) STATUS_PENDING) 
+                  (is-eq (get status invoice) STATUS_PARTIAL)) ERR_INVOICE_NOT_PAYABLE)
+    (asserts! (> amount u0) ERR_INVALID_AMOUNT)
+    
+    ;; Check partial payment rules
+    (asserts! (or (get allow-partial invoice) (>= amount remaining)) ERR_PARTIAL_NOT_ALLOWED)
+    
+    ;; Check overpayment rules
+    (asserts! (or (get allow-overpay invoice) (<= amount remaining)) ERR_OVERPAY_NOT_ALLOWED)
+    
+    ;; Transfer sBTC: payer -> merchant (minus fee)
+    (try! (contract-call? 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token transfer merchant-amount payer (get merchant invoice) none))
+    
+    ;; Transfer fee to platform
+    (if (> fee u0)
+      (try! (contract-call? 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token transfer fee payer (var-get fee-recipient) none))
+      true
+    )
+    
+    ;; Record the payment
+    (map-set invoice-payments 
+      { invoice-id: invoice-id, payment-index: payment-count }
+      {
+        payer: payer,
+        amount: amount,
+        fee-paid: fee,
+        block-height: stacks-block-height
+      }
+    )
+    (map-set invoice-payment-counts invoice-id (+ payment-count u1))
+    
+    ;; Calculate new totals
+    (let (
+      (new-amount-paid (+ (get amount-paid invoice) amount))
+      (new-status (if (>= new-amount-paid (get amount invoice)) 
+                      STATUS_PAID 
+                      STATUS_PARTIAL))
+    )
+      ;; Update invoice
+      (map-set invoices invoice-id (merge invoice {
+        amount-paid: new-amount-paid,
+        status: new-status,
+        payer: (some payer),
+        paid-at: (if (is-eq new-status STATUS_PAID) 
+                     (some stacks-block-height) 
+                     (get paid-at invoice))
+      }))
+      
+      ;; Update merchant stats
+      (map-set merchants (get merchant invoice) (merge merchant-data {
+        total-received: (+ (get total-received merchant-data) merchant-amount)
+      }))
+      
+      ;; Update global stats
+      (var-set total-volume (+ (var-get total-volume) amount))
+      (var-set total-fees-collected (+ (var-get total-fees-collected) fee))
+      
+      (print {
+        event: "invoice-payment",
+        invoice-id: invoice-id,
+        payer: payer,
+        amount: amount,
+        fee: fee,
+        new-status: new-status,
+        total-paid: new-amount-paid
+      })
+      
+      (ok { 
+        status: new-status, 
+        amount-paid: new-amount-paid,
+        remaining: (safe-sub (get amount invoice) new-amount-paid)
+      })
+    )
+  )
+)
