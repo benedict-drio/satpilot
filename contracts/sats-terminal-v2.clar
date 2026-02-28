@@ -336,3 +336,51 @@
     (ok new-id)
   )
 )
+
+;; Update merchant profile
+(define-public (update-merchant-profile
+  (name (string-utf8 64))
+  (description (optional (string-utf8 256)))
+  (webhook-url (optional (string-utf8 256)))
+)
+  (let (
+    (caller tx-sender)
+    (merchant (unwrap! (map-get? merchants caller) ERR_MERCHANT_NOT_FOUND))
+  )
+    (try! (check-is-operational))
+    
+    (map-set merchants caller (merge merchant {
+      name: name,
+      description: description,
+      webhook-url: webhook-url
+    }))
+    
+    (print { event: "merchant-profile-updated", merchant: caller })
+    (ok true)
+  )
+)
+
+;; Deactivate merchant (self)
+(define-public (deactivate-merchant)
+  (let (
+    (caller tx-sender)
+    (merchant (unwrap! (map-get? merchants caller) ERR_MERCHANT_NOT_FOUND))
+  )
+    (map-set merchants caller (merge merchant { is-active: false }))
+    (print { event: "merchant-deactivated", merchant: caller })
+    (ok true)
+  )
+)
+
+;; Reactivate merchant (self)
+(define-public (activate-merchant)
+  (let (
+    (caller tx-sender)
+    (merchant (unwrap! (map-get? merchants caller) ERR_MERCHANT_NOT_FOUND))
+  )
+    (try! (check-is-operational))
+    (map-set merchants caller (merge merchant { is-active: true }))
+    (print { event: "merchant-activated", merchant: caller })
+    (ok true)
+  )
+)
