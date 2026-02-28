@@ -1,18 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, ArrowRight, Menu, X, Wallet, LogOut, Loader2 } from "lucide-react";
+import { Zap, ArrowRight, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { useWallet, truncate } from "@/contexts/WalletContext";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { WalletButton } from "@/components/wallet/WalletButton";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -25,7 +17,6 @@ const navLinks = [
 
 export function Navbar() {
   const navigate = useNavigate();
-  const { isConnected, address, isConnecting, connect, disconnect } = useWallet();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -51,56 +42,6 @@ export function Navbar() {
         scrollToEl();
       }
     }
-  };
-
-  const WalletButton = ({ className, mobile }: { className?: string; mobile?: boolean }) => {
-    if (isConnected && address) {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg border border-success/30 bg-success/10 text-success text-sm font-semibold transition-all hover:bg-success/20",
-                mobile && "w-full justify-center py-2.5",
-                className
-              )}
-            >
-              <Wallet className="w-4 h-4" />
-              {truncate(address)}
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel className="text-xs font-mono text-muted-foreground">
-              {truncate(address)}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={disconnect} className="text-destructive focus:text-destructive cursor-pointer">
-              <LogOut className="w-4 h-4 mr-2" />
-              Disconnect
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    }
-
-    return (
-      <button
-        onClick={connect}
-        disabled={isConnecting}
-        className={cn(
-          "flex items-center gap-2 px-5 py-2 rounded-lg gradient-bitcoin text-primary-foreground text-sm font-semibold hover:brightness-110 transition-all shadow-glow disabled:opacity-70",
-          mobile && "w-full justify-center py-2.5 mt-2",
-          className
-        )}
-      >
-        {isConnecting ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : (
-          <Wallet className="w-4 h-4" />
-        )}
-        {isConnecting ? "Connecting…" : "Connect Wallet"}
-      </button>
-    );
   };
 
   return (
@@ -175,7 +116,7 @@ export function Navbar() {
                 <span className="text-sm text-muted-foreground">Theme</span>
                 <ThemeToggle />
               </div>
-              <WalletButton mobile />
+              <WalletButton className="w-full mt-2" />
             </div>
           </motion.div>
         )}
