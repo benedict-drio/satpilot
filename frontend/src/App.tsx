@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { WalletProvider, useWallet } from "@/contexts/WalletContext";
+import { NetworkWarningBanner } from "@/components/wallet/NetworkWarningBanner";
 import Index from "./pages/Index";
 import PaymentDemo from "./pages/PaymentDemo";
 import NotFound from "./pages/NotFound";
@@ -36,6 +37,7 @@ const App = () => (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
     <WalletProvider>
     <TooltipProvider>
+      <NetworkWarningBanner />
       <Toaster />
       <Sonner />
       <BrowserRouter>
