@@ -384,3 +384,67 @@
     (ok true)
   )
 )
+
+;; ============================================================================
+;; INVOICE FUNCTIONS
+;; ============================================================================
+
+;; Create a new invoice
+(define-public (create-invoice
+  (amount uint)
+  (memo (string-utf8 256))
+  (reference-id (optional (string-utf8 64)))
+  (expires-in-blocks uint)
+  (allow-partial bool)
+  (allow-overpay bool)
+)
+  (let (
+    (caller tx-sender)
+    (merchant (unwrap! (map-get? merchants caller) ERR_MERCHANT_NOT_FOUND))
+    (invoice-id (get-next-invoice-id))
+    (expiry-block (+ stacks-block-height expires-in-blocks))
+  )
+    (try! (check-is-operational))
+    (asserts! (get is-active merchant) ERR_MERCHANT_INACTIVE)
+    (asserts! (>= amount MIN_INVOICE_AMOUNT) ERR_AMOUNT_TOO_LOW)
+    (asserts! (<= amount MAX_INVOICE_AMOUNT) ERR_AMOUNT_TOO_HIGH)
+    (asserts! (<= expires-in-blocks MAX_EXPIRY_BLOCKS) ERR_INVALID_AMOUNT)
+    
+    (map-set invoices invoice-id {
+      merchant: caller,
+      amount: amount,
+      amount-paid: u0,
+      amount-refunded: u0,
+      memo: memo,
+      reference-id: reference-id,
+      status: STATUS_PENDING,
+      payer: none,
+      allow-partial: allow-partial,
+      allow-overpay: allow-overpay,
+      created-at: stacks-block-height,
+      expires-at: expiry-block,
+      paid-at: none
+    })
+    
+    (map-set invoice-payment-counts invoice-id u0)
+    
+    ;; Update merchant stats
+    (map-set merchants caller (merge merchant {
+      invoice-count: (+ (get invoice-count merchant) u1)
+    }))
+    
+    (var-set total-invoices (+ (var-get total-invoices) u1))
+    
+    (print {
+      event: "invoice-created",
+      invoice-id: invoice-id,
+      merchant: caller,
+      amount: amount,
+      expires-at: expiry-block,
+      reference-id: reference-id,
+      allow-partial: allow-partial
+    })
+    
+    (ok invoice-id)
+  )
+)
