@@ -251,3 +251,44 @@
     (ok true)
   )
 )
+
+;; Update fee recipient
+(define-public (set-fee-recipient (recipient principal))
+  (begin
+    (try! (check-is-owner))
+    (var-set fee-recipient recipient)
+    (print { event: "fee-recipient-updated", recipient: recipient })
+    (ok true)
+  )
+)
+
+;; Update platform fee (max 5%)
+(define-public (set-platform-fee (fee-bps uint))
+  (begin
+    (try! (check-is-owner))
+    (asserts! (<= fee-bps u500) ERR_INVALID_AMOUNT) ;; Max 5%
+    (var-set platform-fee-bps fee-bps)
+    (print { event: "platform-fee-updated", fee-bps: fee-bps })
+    (ok true)
+  )
+)
+
+;; Verify merchant (admin only)
+(define-public (verify-merchant (merchant-address principal))
+  (let ((merchant (unwrap! (map-get? merchants merchant-address) ERR_MERCHANT_NOT_FOUND)))
+    (try! (check-is-owner))
+    (map-set merchants merchant-address (merge merchant { is-verified: true }))
+    (print { event: "merchant-verified", merchant: merchant-address })
+    (ok true)
+  )
+)
+
+;; Suspend merchant (admin only)
+(define-public (suspend-merchant (merchant-address principal))
+  (let ((merchant (unwrap! (map-get? merchants merchant-address) ERR_MERCHANT_NOT_FOUND)))
+    (try! (check-is-owner))
+    (map-set merchants merchant-address (merge merchant { is-active: false }))
+    (print { event: "merchant-suspended", merchant: merchant-address })
+    (ok true)
+  )
+)
