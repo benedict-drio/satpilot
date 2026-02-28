@@ -630,3 +630,58 @@
     (ok refund-id)
   )
 )
+
+;; ============================================================================
+;; READ-ONLY FUNCTIONS
+;; ============================================================================
+
+;; Get merchant details
+(define-read-only (get-merchant (address principal))
+  (map-get? merchants address)
+)
+
+;; Check if address is a registered merchant
+(define-read-only (is-merchant (address principal))
+  (is-some (map-get? merchants address))
+)
+
+;; Check if merchant is active
+(define-read-only (is-merchant-active (address principal))
+  (match (map-get? merchants address)
+    merchant (get is-active merchant)
+    false
+  )
+)
+
+;; Get invoice details
+(define-read-only (get-invoice (invoice-id uint))
+  (map-get? invoices invoice-id)
+)
+
+;; Get invoice status
+(define-read-only (get-invoice-status (invoice-id uint))
+  (match (map-get? invoices invoice-id)
+    invoice (some (get status invoice))
+    none
+  )
+)
+
+;; Check if invoice is payable
+(define-read-only (is-invoice-payable (invoice-id uint))
+  (match (map-get? invoices invoice-id)
+    invoice (and 
+      (or (is-eq (get status invoice) STATUS_PENDING)
+          (is-eq (get status invoice) STATUS_PARTIAL))
+      (not (is-invoice-expired (get expires-at invoice)))
+    )
+    false
+  )
+)
+
+;; Get refundable amount for an invoice
+(define-read-only (get-refundable-amount (invoice-id uint))
+  (match (map-get? invoices invoice-id)
+    invoice (safe-sub (get amount-paid invoice) (get amount-refunded invoice))
+    u0
+  )
+)
