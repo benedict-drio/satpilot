@@ -102,3 +102,50 @@
     is-verified: bool
   }
 )
+
+;; Invoice storage with partial payment support
+(define-map invoices
+  uint
+  {
+    merchant: principal,
+    amount: uint,
+    amount-paid: uint,
+    amount-refunded: uint,
+    memo: (string-utf8 256),
+    reference-id: (optional (string-utf8 64)),
+    status: uint,
+    payer: (optional principal),
+    allow-partial: bool,
+    allow-overpay: bool,
+    created-at: uint,
+    expires-at: uint,
+    paid-at: (optional uint)
+  }
+)
+
+;; Individual payment records (for partial payments tracking)
+(define-map invoice-payments
+  { invoice-id: uint, payment-index: uint }
+  {
+    payer: principal,
+    amount: uint,
+    fee-paid: uint,
+    block-height: uint
+  }
+)
+
+;; Payment count per invoice
+(define-map invoice-payment-counts uint uint)
+
+;; Refund records
+(define-map refunds
+  uint
+  {
+    invoice-id: uint,
+    merchant: principal,
+    recipient: principal,
+    amount: uint,
+    reason: (string-utf8 256),
+    processed-at: uint
+  }
+)
