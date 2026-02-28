@@ -541,3 +541,92 @@
     )
   )
 )
+
+;; Cancel invoice (merchant only, only if unpaid)
+(define-public (cancel-invoice (invoice-id uint))
+  (let (
+    (invoice (unwrap! (map-get? invoices invoice-id) ERR_INVOICE_NOT_FOUND))
+    (caller tx-sender)
+  )
+    (asserts! (is-eq caller (get merchant invoice)) ERR_UNAUTHORIZED)
+    (asserts! (is-eq (get status invoice) STATUS_PENDING) ERR_INVOICE_NOT_PAYABLE)
+    
+    (map-set invoices invoice-id (merge invoice { status: STATUS_CANCELLED }))
+    
+    (print { event: "invoice-cancelled", invoice-id: invoice-id, by: caller })
+    (ok true)
+  )
+)
+
+;; ============================================================================
+;; REFUND FUNCTIONS
+;; ============================================================================
+
+;; Process refund (merchant only)
+(define-public (refund-invoice 
+  (invoice-id uint) 
+  (refund-amount uint) 
+  (reason (string-utf8 256))
+)
+  (let (
+    (invoice (unwrap! (map-get? invoices invoice-id) ERR_INVOICE_NOT_FOUND))
+    (merchant-data (unwrap! (map-get? merchants (get merchant invoice)) ERR_MERCHANT_NOT_FOUND))
+    (caller tx-sender)
+    (refundable (safe-sub (get amount-paid invoice) (get amount-refunded invoice)))
+    (refund-id (get-next-refund-id))
+    (recipient (unwrap! (get payer invoice) ERR_NO_REFUND_AVAILABLE))
+  )
+    (try! (check-is-operational))
+    
+    ;; Only merchant can refund
+    (asserts! (is-eq caller (get merchant invoice)) ERR_UNAUTHORIZED)
+    
+    ;; Must have something to refund
+    (asserts! (> refundable u0) ERR_NO_REFUND_AVAILABLE)
+    (asserts! (<= refund-amount refundable) ERR_REFUND_EXCEEDS_PAID)
+    (asserts! (> refund-amount u0) ERR_INVALID_AMOUNT)
+    
+    ;; Transfer sBTC back to payer
+    (try! (contract-call? 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token transfer refund-amount caller recipient none))
+    
+    ;; Record refund
+    (map-set refunds refund-id {
+      invoice-id: invoice-id,
+      merchant: caller,
+      recipient: recipient,
+      amount: refund-amount,
+      reason: reason,
+      processed-at: stacks-block-height
+    })
+    
+    ;; Update invoice
+    (let ((new-refunded (+ (get amount-refunded invoice) refund-amount)))
+      (map-set invoices invoice-id (merge invoice {
+        amount-refunded: new-refunded,
+        status: (if (>= new-refunded (get amount-paid invoice)) 
+                    STATUS_REFUNDED 
+                    (get status invoice))
+      }))
+    )
+    
+    ;; Update merchant stats
+    (map-set merchants caller (merge merchant-data {
+      total-refunded: (+ (get total-refunded merchant-data) refund-amount)
+    }))
+    
+    ;; Update global stats
+    (var-set total-refunds (+ (var-get total-refunds) refund-amount))
+    
+    (print {
+      event: "invoice-refunded",
+      refund-id: refund-id,
+      invoice-id: invoice-id,
+      merchant: caller,
+      recipient: recipient,
+      amount: refund-amount,
+      reason: reason
+    })
+    
+    (ok refund-id)
+  )
+)
