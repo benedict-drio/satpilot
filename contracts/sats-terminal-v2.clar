@@ -202,3 +202,52 @@
 (define-read-only (check-is-owner)
   (ok (asserts! (is-owner) ERR_UNAUTHORIZED))
 )
+
+(define-read-only (check-is-operational)
+  (ok (asserts! (is-operational) ERR_CONTRACT_PAUSED))
+)
+
+;; ============================================================================
+;; ADMIN FUNCTIONS
+;; ============================================================================
+
+;; Pause contract (emergency)
+(define-public (pause-contract)
+  (begin
+    (try! (check-is-owner))
+    (var-set contract-paused true)
+    (print { event: "contract-paused", by: tx-sender, block: stacks-block-height })
+    (ok true)
+  )
+)
+
+;; Unpause contract
+(define-public (unpause-contract)
+  (begin
+    (try! (check-is-owner))
+    (var-set contract-paused false)
+    (print { event: "contract-unpaused", by: tx-sender, block: stacks-block-height })
+    (ok true)
+  )
+)
+
+;; Initiate ownership transfer (2-step for security)
+(define-public (transfer-ownership (new-owner principal))
+  (begin
+    (try! (check-is-owner))
+    (var-set pending-owner (some new-owner))
+    (print { event: "ownership-transfer-initiated", from: tx-sender, to: new-owner })
+    (ok true)
+  )
+)
+
+;; Accept ownership (called by new owner)
+(define-public (accept-ownership)
+  (let ((pending (unwrap! (var-get pending-owner) ERR_OWNERSHIP_PENDING)))
+    (asserts! (is-eq tx-sender pending) ERR_NOT_PENDING_OWNER)
+    (var-set contract-owner pending)
+    (var-set pending-owner none)
+    (print { event: "ownership-transferred", new-owner: tx-sender })
+    (ok true)
+  )
+)
