@@ -40,12 +40,12 @@ export function DashboardSidebar() {
   return (
     <Sidebar collapsible="icon" className="hidden md:flex">
       <SidebarHeader className="p-4">
-        <NavLink to="/" className="flex items-center gap-2" aria-label="SatsTerminal home">
+        <NavLink to="/" className="flex items-center gap-2" aria-label="SatsRail home">
           <div className="w-8 h-8 rounded-lg gradient-bitcoin flex items-center justify-center shrink-0">
             <Zap className="w-4 h-4 text-primary-foreground" />
           </div>
           <span className="font-display font-bold text-lg text-foreground group-data-[collapsible=icon]:hidden">
-            SatsTerminal
+            SatsRail
           </span>
         </NavLink>
       </SidebarHeader>

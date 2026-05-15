@@ -1,6 +1,6 @@
-;; title: SatsTerminal V2
+;; title: SatsRail V2
 ;; version: 2.0.0
-;; summary: Enterprise sBTC Payment Terminal for Merchants
+;; summary: Enterprise sBTC Payment Rails for Merchants
 ;; description: Production-ready payment infrastructure with invoices, partial payments,
 ;;              refunds, platform fees, and comprehensive merchant management.
 ;;              Built for Stacks Endowment Grant - Getting Started Track

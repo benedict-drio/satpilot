@@ -53,7 +53,7 @@ export function HeroSection() {
             </h1>
 
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-md">
-              SatsTerminal brings instant sBTC payments to your business. 
+              SatsRail brings instant sBTC payments to your business.
               Low fees, self-custody, and a seamless checkout — powered by the Stacks blockchain.
             </p>
 

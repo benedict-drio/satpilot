@@ -1,5 +1,5 @@
 /**
- * SatsTerminal Contract Configuration
+ * SatsRail Contract Configuration
  * Deployed on Stacks Testnet
  */
 

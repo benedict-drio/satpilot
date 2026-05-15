@@ -1,10 +1,10 @@
-# SatsTerminal
+# SatsRail
 
-> Enterprise sBTC Payment Infrastructure for Bitcoin-Native Commerce on Stacks
+> Enterprise sBTC Payment Rails for Bitcoin-Native Commerce on Stacks
 
-SatsTerminal is a production-ready payment terminal that enables merchants to accept [sBTC](https://docs.stacks.co/concepts/sbtc) payments on the [Stacks blockchain](https://www.stacks.co/). It provides a full-featured smart contract backend with invoice management, partial payments, refunds, and platform-level fee collection — paired with a polished React frontend dashboard.
+SatsRail is a production-ready payment infrastructure that enables merchants to accept [sBTC](https://docs.stacks.co/concepts/sbtc) payments on the [Stacks blockchain](https://www.stacks.co/). It provides a full-featured smart contract backend with invoice management, partial payments, refunds, and platform-level fee collection — paired with a polished React frontend dashboard.
 
-Built for the **Stacks Endowment Grant — Getting Started Track**.
+Built for the **Stacks Endowment — Validate Program**.
 
 ---
 

@@ -20,12 +20,12 @@ const faqs = [
   {
     question: "What are the fees?",
     answer:
-      "SatsTerminal charges a flat 0.5% fee per transaction on the Pro plan — one of the lowest rates in crypto payments. There are no hidden fees, monthly minimums, or setup costs. The Starter plan is completely free for up to 100 transactions per month.",
+      "SatsRail charges a flat 0.5% fee per transaction on the Pro plan — one of the lowest rates in crypto payments. There are no hidden fees, monthly minimums, or setup costs. The Starter plan is completely free for up to 100 transactions per month.",
   },
   {
     question: "Do I need to KYC my customers?",
     answer:
-      "SatsTerminal is a self-custody payment tool — we never hold your funds or your customers' data. Whether you need to collect KYC information depends on your local regulations and business requirements. We provide the payment rails; compliance is up to you.",
+      "SatsRail is a self-custody payment tool — we never hold your funds or your customers' data. Whether you need to collect KYC information depends on your local regulations and business requirements. We provide the payment rails; compliance is up to you.",
   },
   {
     question: "How do refunds work?",
@@ -33,7 +33,7 @@ const faqs = [
       "Refunds are handled directly from your merchant dashboard with a single click. Each refund is logged with a full audit trail including timestamps, amounts, and transaction hashes so you always have a clear record.",
   },
   {
-    question: "How do I integrate SatsTerminal?",
+    question: "How do I integrate SatsRail?",
     answer:
       "Drop our payment widget into your site with a few lines of code. Generate your API keys from the dashboard, configure your preferred settings, and you're ready to accept Bitcoin payments. Full documentation and code examples are available to get you live in minutes.",
   },
@@ -64,7 +64,7 @@ export function FAQSection() {
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Everything you need to know about accepting Bitcoin payments with
-            SatsTerminal.
+            SatsRail.
           </p>
         </motion.div>
 

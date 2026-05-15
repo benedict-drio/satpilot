@@ -1,5 +1,5 @@
 /**
- * SatsTerminal V2 - Enterprise Contract Tests
+ * SatsRail V2 - Enterprise Contract Tests
  * Tests: merchant registration, invoices, payments, partial payments, 
  *        refunds, admin controls, and platform fees
  */
@@ -17,7 +17,7 @@ const newOwner = accounts.get("wallet_5")!;
 
 const CONTRACT_NAME = "sats-terminal-v2";
 
-describe("SatsTerminal V2 - Enterprise Tests", () => {
+describe("SatsRail V2 - Enterprise Tests", () => {
   
   // ========================================
   // ADMIN FUNCTIONS

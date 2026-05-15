@@ -1,5 +1,5 @@
 {
-  "name": "sats-terminal-tests",
+  "name": "sats-rail-tests",
   "version": "1.0.0",
   "description": "Run unit tests on this project.",
   "type": "module",

@@ -109,7 +109,7 @@ export function PaymentWidgetDemo() {
       {/* Footer */}
       <div className="px-5 pb-4 text-center">
         <p className="text-[10px] text-muted-foreground/60">
-          Powered by <span className="text-gradient-bitcoin font-semibold">SatsTerminal</span>
+          Powered by <span className="text-gradient-bitcoin font-semibold">SatsRail</span>
         </p>
       </div>
     </motion.div>

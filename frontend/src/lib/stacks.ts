@@ -1,6 +1,6 @@
 /**
  * Stacks Contract Interaction Helpers
- * For calling SatsTerminal V2 contract functions
+ * For calling SatsRail V2 contract functions
  */
 
 import {

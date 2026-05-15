@@ -1,6 +1,6 @@
 /**
  * useContract Hook
- * React hooks for SatsTerminal contract interactions
+ * React hooks for SatsRail contract interactions
  */
 
 import { useState } from 'react';
