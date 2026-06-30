@@ -202,7 +202,7 @@ export default function Payments() {
         transition={{ delay: 0.2 }}
         className="glass-card p-5"
       >
-        <h3 className="text-lg font-display font-semibold text-foreground mb-4">Payment Volume — Last 7 Days</h3>
+        <h3 className="text-lg font-display font-semibold text-foreground mb-4">Payment Volume: Last 7 Days</h3>
         <ChartContainer config={chartConfig} className="h-[220px] w-full">
           <BarChart data={paymentVolume} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
@@ -233,7 +233,7 @@ export default function Payments() {
       >
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="relative w-[220px]">
+          <div className="relative w-full sm:w-[220px]">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search by customer, ID, or memo..."
@@ -243,7 +243,7 @@ export default function Payments() {
             />
           </div>
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v as any); setPage(0); }}>
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-full sm:w-[140px]">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -257,7 +257,7 @@ export default function Payments() {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className={cn("w-[160px] justify-start text-left font-normal", !dateFrom && "text-muted-foreground")}
+                className={cn("w-full sm:w-[160px] justify-start text-left font-normal",!dateFrom && "text-muted-foreground")}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {dateFrom ? format(dateFrom, "PP") : "Start date"}
@@ -278,7 +278,7 @@ export default function Payments() {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className={cn("w-[160px] justify-start text-left font-normal", !dateTo && "text-muted-foreground")}
+                className={cn("w-full sm:w-[160px] justify-start text-left font-normal",!dateTo && "text-muted-foreground")}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {dateTo ? format(dateTo, "PP") : "End date"}
