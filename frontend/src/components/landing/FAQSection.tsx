@@ -15,17 +15,17 @@ const faqs = [
   {
     question: "How fast are payment confirmations?",
     answer:
-      "Stacks produces blocks every few seconds, so payments are confirmed almost instantly. Your dashboard updates in real time as transactions settle, giving you and your customers a seamless checkout experience.",
+      "Stacks produces blocks every few seconds, so payments are confirmed almost instantly. Your dashboard updates in real time as transactions settle, giving you and your customers a fast checkout experience.",
   },
   {
     question: "What are the fees?",
     answer:
-      "SatsRail charges a flat 0.5% fee per transaction on the Pro plan — one of the lowest rates in crypto payments. There are no hidden fees, monthly minimums, or setup costs. The Starter plan is completely free for up to 100 transactions per month.",
+      "Satpilot charges a flat 0.5% fee per transaction on the Pro plan — one of the lowest rates in crypto payments. There are no hidden fees, monthly minimums, or setup costs. The Starter plan is completely free for up to 100 transactions per month.",
   },
   {
     question: "Do I need to KYC my customers?",
     answer:
-      "SatsRail is a self-custody payment tool — we never hold your funds or your customers' data. Whether you need to collect KYC information depends on your local regulations and business requirements. We provide the payment rails; compliance is up to you.",
+      "Satpilot is a self-custody payment tool — we never hold your funds or your customers' data. Whether you need to collect KYC information depends on your local regulations and business requirements. We provide the payment rails; compliance is up to you.",
   },
   {
     question: "How do refunds work?",
@@ -33,7 +33,7 @@ const faqs = [
       "Refunds are handled directly from your merchant dashboard with a single click. Each refund is logged with a full audit trail including timestamps, amounts, and transaction hashes so you always have a clear record.",
   },
   {
-    question: "How do I integrate SatsRail?",
+    question: "How do I integrate Satpilot?",
     answer:
       "Drop our payment widget into your site with a few lines of code. Generate your API keys from the dashboard, configure your preferred settings, and you're ready to accept Bitcoin payments. Full documentation and code examples are available to get you live in minutes.",
   },
@@ -50,26 +50,30 @@ const item = {
 
 export function FAQSection() {
   return (
-    <section id="faq" className="py-32 relative scroll-mt-20">
+    <section id="faq" className="py-32 relative scroll-mt-20 border-y border-border bg-card">
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground">
-            Frequently Asked{" "}
-            <span className="text-gradient-bitcoin">Questions</span>
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to know about accepting Bitcoin payments with
-            SatsRail.
-          </p>
-        </motion.div>
+        <div className="grid gap-16 lg:grid-cols-[0.85fr_1.15fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:sticky lg:top-28 lg:self-start"
+          >
+            <h2 className="text-fluid-heading font-display font-bold text-foreground">
+              Frequently asked questions
+            </h2>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
+              Everything you need to know about accepting Bitcoin with Satpilot.
+            </p>
+            <a
+              href="#contact"
+              className="mt-6 inline-flex text-sm font-semibold text-primary transition-colors hover:brightness-110"
+            >
+              Still have a question? Talk to us &rarr;
+            </a>
+          </motion.div>
 
-        <div className="max-w-2xl mx-auto glass-card p-6 md:p-8">
-          <Accordion type="single" collapsible>
+          <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, i) => (
               <motion.div
                 key={i}
@@ -79,11 +83,8 @@ export function FAQSection() {
                 whileInView="show"
                 viewport={{ once: true }}
               >
-                <AccordionItem
-                  value={`faq-${i}`}
-                  className="border-border/50"
-                >
-                  <AccordionTrigger className="text-left text-foreground hover:no-underline">
+                <AccordionItem value={`faq-${i}`} className="border-border first:border-t-0">
+                  <AccordionTrigger className="py-5 text-left font-display text-base font-medium text-foreground hover:no-underline">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground leading-relaxed">

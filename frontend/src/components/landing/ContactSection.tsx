@@ -43,24 +43,37 @@ export function ContactSection() {
   return (
     <section id="contact" className="py-32 relative scroll-mt-20">
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground">
-            Get in <span className="text-gradient-bitcoin">Touch</span>
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have a question or need help getting started? Drop us a message.
-          </p>
-        </motion.div>
+        <div className="grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:sticky lg:top-28 lg:self-start"
+          >
+            <h2 className="text-fluid-heading font-display font-bold text-foreground">
+              Get in touch
+            </h2>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
+              Question about integrating, pricing, or going live? Send a note and a real person
+              gets back to you, usually within a day.
+            </p>
+            <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-success" /> Typical reply in under 24 hours
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-success" /> Self-custody, your funds stay yours
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-success" /> Live in minutes with the embed widget
+              </li>
+            </ul>
+          </motion.div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="glass-card p-6 md:p-8 max-w-xl mx-auto space-y-6"
-        >
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6 rounded-xl border border-border bg-card p-6 md:p-8"
+          >
           <motion.div custom={0} variants={fieldVariant} initial="hidden" whileInView="show" viewport={{ once: true }} className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input id="name" placeholder="Your name" {...register("name")} />
@@ -81,10 +94,11 @@ export function ContactSection() {
 
           <motion.div custom={3} variants={fieldVariant} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              Send Message
+              Send message
             </Button>
           </motion.div>
         </form>
+        </div>
       </div>
     </section>
   );
