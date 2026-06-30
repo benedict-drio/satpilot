@@ -4,6 +4,7 @@ import {
   FileText,
   CreditCard,
   RotateCcw,
+  Bot,
   Settings,
 } from "lucide-react";
 import { invoices } from "@/data/mockDashboard";
@@ -16,6 +17,7 @@ const navItems = [
   { title: "Invoices", url: "/dashboard/invoices", icon: FileText, badge: pendingCount },
   { title: "Payments", url: "/dashboard/payments", icon: CreditCard },
   { title: "Refunds", url: "/dashboard/refunds", icon: RotateCcw },
+  { title: "Agents", url: "/dashboard/agents", icon: Bot },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 
