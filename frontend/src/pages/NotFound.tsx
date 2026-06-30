@@ -8,8 +8,8 @@ const NotFound = () => {
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-    document.title = "Page Not Found | SatsRail";
-    return () => { document.title = "SatsRail"; };
+    document.title = "Page Not Found | Satpilot";
+    return () => { document.title = "Satpilot"; };
   }, [location.pathname]);
 
   return (
