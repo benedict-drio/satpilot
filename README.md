@@ -1,8 +1,8 @@
-# SatsRail
+# Satpilot
 
 > Enterprise sBTC Payment Rails for Bitcoin-Native Commerce on Stacks
 
-SatsRail is a production-ready payment infrastructure that enables merchants to accept [sBTC](https://docs.stacks.co/concepts/sbtc) payments on the [Stacks blockchain](https://www.stacks.co/). It provides a full-featured smart contract backend with invoice management, partial payments, refunds, and platform-level fee collection — paired with a polished React frontend dashboard.
+Satpilot is a production-ready payment infrastructure that enables merchants to accept [sBTC](https://docs.stacks.co/concepts/sbtc) payments on the [Stacks blockchain](https://www.stacks.co/). It provides a full-featured smart contract backend with invoice management, partial payments, refunds, and platform-level fee collection — paired with a polished React frontend dashboard.
 
 Built for the **Stacks Endowment — Validate Program**.
 
@@ -28,15 +28,15 @@ Built for the **Stacks Endowment — Validate Program**.
 sats-terminal/
 ├── contracts/
 │   ├── sats-terminal.clar        # V1 contract
-│   └── sats-terminal-v2.clar     # V2 — production contract
+│   └── sats-terminal-.clar     #  — production contract
 ├── tests/
-│   └── sats-terminal-v2.test.ts  # Clarinet unit tests
+│   └── sats-terminal-.test.ts  # Clarinet unit tests
 ├── scripts/
 │   ├── deploy-testnet.ts          # Deploy to Stacks testnet
 │   ├── test-testnet.ts            # Manual testnet smoke tests
-│   ├── test-testnet-v2.ts         # V2 testnet integration tests
-│   ├── test-v2-advanced.ts        # Advanced scenario tests
-│   ├── test-v2-full.ts            # Full lifecycle tests
+│   ├── test-testnet-.ts         #  testnet integration tests
+│   ├── test--advanced.ts        # Advanced scenario tests
+│   ├── test--full.ts            # Full lifecycle tests
 │   └── fund-customer.ts           # Fund test wallets
 ├── deployments/
 │   ├── default.simnet-plan.yaml
@@ -58,9 +58,9 @@ sats-terminal/
 
 ## Smart Contract
 
-**Contract:** `sats-terminal-v2.clar`  
+**Contract:** `sats-terminal-.clar`  
 **Clarity Version:** 4  
-**Token:** [sBTC](https://docs.stacks.co/concepts/sbtc) (`ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token`)
+**Token:** [sBTC](https://docs.stacks.co/concepts/sbtc) (`SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-token`)
 
 ### Key Parameters
 
@@ -170,7 +170,7 @@ This broadcasts a contract deployment transaction to Stacks Testnet and prints t
 ### 3. Run testnet integration tests
 
 ```bash
-npm run test:testnet:v2
+npm run test:testnet:
 ```
 
 ---
@@ -275,7 +275,7 @@ Connect a Stacks wallet (Leather or Xverse) via the `WalletContext`. The app use
 
 | Network  | Contract                                                              |
 | -------- | --------------------------------------------------------------------- |
-| Testnet  | `ST3P2G9ZK7B309EGAM9QAM143YGDNBGGQAW3RPRRQ.sats-terminal-v2`          |
+| Testnet  | `ST3P2G9ZK7B309EGAM9QAM143YGDNBGGQAW3RPRRQ.sats-terminal-`          |
 | Explorer | [View on Hiro Explorer](https://explorer.hiro.so/txid/?chain=testnet) |
 
 ---
