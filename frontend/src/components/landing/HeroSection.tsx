@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { PaymentWidgetDemo } from "./PaymentWidgetDemo";
 import { useWallet } from "@/contexts/WalletContext";
@@ -24,9 +24,15 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
-      {/* Background glow */}
+      {/* Background: layered glow + fading grid for depth */}
       <div className="absolute inset-0 gradient-dark-glow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-[120px]" />
+      <div
+        aria-hidden
+        className="absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_65%_60%_at_50%_42%,#000,transparent)]"
+      >
+        <div className="absolute -inset-[52px] opacity-[0.08] [background-image:linear-gradient(to_right,hsl(var(--foreground))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground))_1px,transparent_1px)] [background-size:52px_52px] will-change-transform motion-safe:animate-grid-pan" />
+      </div>
+      <div aria-hidden className="absolute right-[6%] top-1/2 h-[460px] w-[460px] -translate-y-1/2 rounded-full bg-primary/10 blur-[130px]" />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -47,14 +53,14 @@ export function HeroSection() {
               <span className="text-xs font-medium text-primary">Built on Stacks · Secured by Bitcoin</span>
             </motion.div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.05] tracking-tight text-foreground">
+            <h1 className="text-fluid-display font-display font-bold text-foreground">
               Accept Bitcoin Payments in{" "}
               <span className="text-gradient-bitcoin">Seconds</span>, Not Hours
             </h1>
 
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-md">
-              SatsRail brings instant sBTC payments to your business.
-              Low fees, self-custody, and a seamless checkout — powered by the Stacks blockchain.
+              Satpilot brings instant sBTC payments to your business:
+              low fees, self-custody, and a fast checkout powered by the Stacks blockchain.
             </p>
 
             <div className="flex flex-wrap gap-4 mt-10">
@@ -68,30 +74,30 @@ export function HeroSection() {
               </button>
             </div>
 
-            <div className="flex items-center gap-6 mt-12 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-success" />
-                0.5% Fees
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-success" />
-                Instant Settlement
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-success" />
-                Self-Custody
-              </div>
+            <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
+              <span className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-success" /> 0.5% flat fee
+              </span>
+              <span className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-success" /> ~12s settlement
+              </span>
+              <span className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-success" /> Self-custody
+              </span>
             </div>
           </motion.div>
 
-          {/* Right — Widget Demo */}
+          {/* Right — Widget Demo with glow halo for presence */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="flex justify-center lg:justify-end"
+            className="relative flex justify-center lg:justify-end lg:pr-6 xl:pr-10"
           >
-            <PaymentWidgetDemo />
+            <div aria-hidden className="absolute -inset-6 rounded-[2rem] bg-primary/10 blur-3xl" />
+            <div className="relative">
+              <PaymentWidgetDemo />
+            </div>
           </motion.div>
         </div>
       </div>
