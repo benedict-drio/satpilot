@@ -42,10 +42,10 @@ export function Footer() {
               <div className="w-8 h-8 rounded-lg gradient-bitcoin flex items-center justify-center">
                 <Bitcoin className="w-4 h-4 text-primary-foreground" />
               </div>
-              <span className="font-display font-bold text-foreground text-lg">SatsRail</span>
+              <span className="font-display font-bold text-foreground text-lg">Satpilot</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Enterprise-grade Bitcoin payment infrastructure built on Stacks.
+              Bitcoin payment infrastructure built on Stacks.
             </p>
           </div>
 
@@ -74,7 +74,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2026 SatsRail. All rights reserved.
+            © 2026 Satpilot. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground flex items-center gap-1">
             Powered by
