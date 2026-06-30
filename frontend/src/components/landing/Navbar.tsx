@@ -57,13 +57,13 @@ export function Navbar() {
         <button
           onClick={() => navigate("/")}
           className="flex items-center gap-2.5"
-          aria-label="SatsRail home"
+          aria-label="Satpilot home"
         >
           <div className="w-8 h-8 rounded-lg gradient-bitcoin flex items-center justify-center">
             <Zap className="w-4 h-4 text-primary-foreground" />
           </div>
           <span className="font-display font-bold text-lg text-foreground">
-            SatsRail
+            Satpilot
           </span>
         </button>
 

@@ -27,64 +27,63 @@ export function PricingSection() {
   return (
     <section id="pricing" className="py-32 relative scroll-mt-20">
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground">
-            Simple,{" "}
-            <span className="text-gradient-bitcoin">Transparent Pricing</span>
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            No hidden fees. No monthly minimums. Just the lowest rates in crypto payments.
-          </p>
-        </motion.div>
+        <div className="grid gap-16 lg:grid-cols-[0.85fr_1.15fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:sticky lg:top-28 lg:self-start"
+          >
+            <h2 className="text-fluid-heading font-display font-bold text-foreground">
+              Simple, transparent pricing
+            </h2>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-muted-foreground">
+              No hidden fees, no monthly minimums. Start free, and pay a flat 0.5% only when
+              you get paid.
+            </p>
+          </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          {plans.map((plan) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className={`glass-card p-8 flex flex-col ${
-                plan.highlighted ? "border-primary/40 shadow-glow" : ""
-              }`}
-            >
-              <h3 className="text-lg font-display font-semibold text-foreground">
-                {plan.name}
-              </h3>
-              <div className="mt-4 mb-2">
-                <span className="text-4xl font-display font-bold text-foreground">
-                  {plan.price}
-                </span>
-                {plan.priceLabel && (
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    {plan.priceLabel}
+          <div className="grid gap-6 sm:grid-cols-2">
+            {plans.map((plan) => (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className={`relative flex flex-col rounded-xl border bg-card p-8 ${
+                  plan.highlighted ? "border-primary/50 shadow-glow" : "border-border"
+                }`}
+              >
+                {plan.highlighted && (
+                  <span className="absolute -top-3 left-8 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                    Most popular
                   </span>
                 )}
-              </div>
-              <p className="text-sm text-muted-foreground mb-6">
-                {plan.description}
-              </p>
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Check className="w-4 h-4 text-primary shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                variant={plan.ctaVariant}
-                className={`mt-auto w-full ${plan.highlighted ? "gradient-bitcoin text-primary-foreground" : ""}`}
-              >
-                {plan.cta}
-              </Button>
-            </motion.div>
-          ))}
+                <h3 className="font-display text-lg font-semibold text-foreground">{plan.name}</h3>
+                <div className="mb-2 mt-4">
+                  <span className="font-display text-4xl font-bold text-foreground">{plan.price}</span>
+                  {plan.priceLabel && (
+                    <span className="ml-2 text-sm text-muted-foreground">{plan.priceLabel}</span>
+                  )}
+                </div>
+                <p className="mb-6 text-sm text-muted-foreground">{plan.description}</p>
+                <ul className="mb-8 space-y-3">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Check className="h-4 w-4 shrink-0 text-primary" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  variant={plan.ctaVariant}
+                  className={`mt-auto w-full ${plan.highlighted ? "gradient-bitcoin text-primary-foreground" : ""}`}
+                >
+                  {plan.cta}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
