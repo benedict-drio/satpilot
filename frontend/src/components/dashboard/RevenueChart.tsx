@@ -18,7 +18,7 @@ export function RevenueChart() {
       transition={{ delay: 0.4, duration: 0.5 }}
       className="glass-card p-5"
     >
-      <h3 className="text-lg font-display font-semibold text-foreground mb-4">Revenue — Last 7 Days</h3>
+      <h3 className="text-lg font-display font-semibold text-foreground mb-4">Revenue: Last 7 Days</h3>
       <ChartContainer config={chartConfig} className="h-[260px] w-full">
         <AreaChart data={revenueData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
           <defs>

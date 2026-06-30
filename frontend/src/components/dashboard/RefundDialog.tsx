@@ -13,23 +13,75 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatSats } from "@/data/mockDashboard";
+import { useRefundInvoice, useRefundInvoiceStx } from "@/hooks/useContract";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Display id (e.g. "INV-001") shown to the user. */
   invoiceId: string;
   amountSats: number;
+  /** On-chain numeric invoice id. Required to submit a real refund. */
+  onchainInvoiceId?: number;
+  /** Payer principal that paid the invoice and will receive the refund. */
+  recipient?: string;
+  /** Invoice asset: 0 = sBTC, 1 = STX. Chooses the refund path. */
+  asset?: number;
 }
 
-export function RefundDialog({ open, onOpenChange, invoiceId, amountSats }: Props) {
+export function RefundDialog({
+  open,
+  onOpenChange,
+  invoiceId,
+  amountSats,
+  onchainInvoiceId,
+  recipient,
+  asset = 0,
+}: Props) {
   const [refundAmount, setRefundAmount] = useState(amountSats.toString());
   const [reason, setReason] = useState("");
+  const sbtcRefund = useRefundInvoice();
+  const stxRefund = useRefundInvoiceStx();
+  const { mutate: refund, isPending } = asset === 1 ? stxRefund : sbtcRefund;
 
-  const handleConfirm = () => {
-    toast.success("Refund issued successfully", {
-      description: `${formatSats(parseInt(refundAmount) || 0)} sats refunded for ${invoiceId}`,
-    });
-    onOpenChange(false);
+  // A real refund needs the on-chain invoice id and the payer's principal.
+  const canSubmitOnChain = onchainInvoiceId != null && !!recipient;
+
+  const handleConfirm = (e: React.MouseEvent) => {
+    // Keep the dialog open so we can reflect pending/error state and close on success.
+    e.preventDefault();
+    const amount = parseInt(refundAmount) || 0;
+
+    if (!canSubmitOnChain) {
+      // Demo mode: dashboard is still backed by mock data with no payer principal.
+      toast.success("Refund issued successfully", {
+        description: `${formatSats(amount)} sats refunded for ${invoiceId}`,
+      });
+      onOpenChange(false);
+      return;
+    }
+
+    refund(
+      {
+        invoiceId: onchainInvoiceId!,
+        recipient: recipient!,
+        refundAmount: amount,
+        reason: reason || "Merchant-issued refund",
+      },
+      {
+        onSuccess: () => {
+          toast.success("Refund submitted", {
+            description: `${formatSats(amount)} sats refunding to the payer for ${invoiceId}`,
+          });
+          onOpenChange(false);
+        },
+        onError: (err) => {
+          toast.error("Refund failed", {
+            description: err instanceof Error ? err.message : "Transaction was rejected",
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -64,12 +116,13 @@ export function RefundDialog({ open, onOpenChange, invoiceId, amountSats }: Prop
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             onClick={handleConfirm}
+            disabled={isPending}
           >
-            Confirm Refund
+            {isPending ? "Processing…" : "Confirm Refund"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
