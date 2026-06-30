@@ -53,7 +53,7 @@ export function ExpandedState({ onConnect, onBack }: ExpandedStateProps) {
         {/* Address */}
         <div className="bg-muted/50 rounded-lg p-3 flex items-center justify-between">
           <code className="text-xs font-mono text-muted-foreground truncate mr-2">
-            SP2J6ZY48GV1EZ5V2V5RB9MP66SW86PYKKQYAC0J
+            SP2J6ZY48GV1EZ5V5RB9MP66SW86PYKKQYAC0J
           </code>
           <button
             onClick={handleCopy}
