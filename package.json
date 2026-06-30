@@ -1,5 +1,5 @@
 {
-  "name": "sats-rail-tests",
+  "name": "satpilot-tests",
   "version": "1.0.0",
   "description": "Run unit tests on this project.",
   "type": "module",
@@ -8,9 +8,10 @@
     "test": "vitest run",
     "test:report": "vitest run -- --coverage --costs",
     "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test:report\"",
+    "demo:agent": "npx tsx scripts/agent-demo.ts",
     "deploy:testnet": "npx tsx scripts/deploy-testnet.ts",
     "test:testnet": "npx tsx scripts/test-testnet.ts",
-    "test:testnet:v2": "npx tsx scripts/test-testnet-v2.ts"
+    "test:testnet:advanced": "npx tsx scripts/test-testnet-advanced.ts"
   },
   "author": "",
   "license": "ISC",
