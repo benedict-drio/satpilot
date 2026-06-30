@@ -1,7 +1,7 @@
+import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { StatsCards } from "@/components/dashboard/StatsCards";
-import { RevenueChart } from "@/components/dashboard/RevenueChart";
 import { InvoiceStatusBadge } from "@/components/dashboard/InvoiceStatusBadge";
 import { invoices, formatSats } from "@/data/mockDashboard";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
@@ -13,6 +13,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+const RevenueChart = lazy(() =>
+  import("@/components/dashboard/RevenueChart").then((m) => ({ default: m.RevenueChart })),
+);
 
 const recentInvoices = invoices.slice(0, 5);
 
@@ -30,7 +34,9 @@ export default function Dashboard() {
       </motion.div>
 
       <StatsCards />
-      <RevenueChart />
+      <Suspense fallback={<div className="glass-card p-5 h-[324px] animate-pulse" />}>
+        <RevenueChart />
+      </Suspense>
 
       {/* Recent Invoices */}
       <motion.div
@@ -48,6 +54,7 @@ export default function Dashboard() {
             View All
           </button>
         </div>
+        <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -78,6 +85,7 @@ export default function Dashboard() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </motion.div>
     </div>
   );
