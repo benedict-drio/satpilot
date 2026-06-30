@@ -160,12 +160,12 @@ export default function Refunds() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card p-5 space-y-4">
         <div className="flex flex-wrap items-center gap-3">
-          <div className="relative w-[220px]">
+          <div className="relative w-full sm:w-[220px]">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input placeholder="Search by ID, invoice, customer..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(0); }} className="pl-9" />
           </div>
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v as any); setPage(0); }}>
-            <SelectTrigger className="w-[140px]"><SelectValue placeholder="Status" /></SelectTrigger>
+            <SelectTrigger className="w-full sm:w-[140px]"><SelectValue placeholder="Status" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="processed">Processed</SelectItem>
@@ -175,7 +175,7 @@ export default function Refunds() {
           </Select>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className={cn("w-[160px] justify-start text-left font-normal", !dateFrom && "text-muted-foreground")}>
+              <Button variant="outline" className={cn("w-full sm:w-[160px] justify-start text-left font-normal",!dateFrom && "text-muted-foreground")}>
                 <CalendarIcon className="mr-2 h-4 w-4" />{dateFrom ? format(dateFrom, "PP") : "Start date"}
               </Button>
             </PopoverTrigger>
@@ -185,7 +185,7 @@ export default function Refunds() {
           </Popover>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" className={cn("w-[160px] justify-start text-left font-normal", !dateTo && "text-muted-foreground")}>
+              <Button variant="outline" className={cn("w-full sm:w-[160px] justify-start text-left font-normal",!dateTo && "text-muted-foreground")}>
                 <CalendarIcon className="mr-2 h-4 w-4" />{dateTo ? format(dateTo, "PP") : "End date"}
               </Button>
             </PopoverTrigger>

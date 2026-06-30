@@ -55,7 +55,7 @@ mnemonic = "area desk dutch sign gold cricket dawn toward giggle vibrant indoor 
 balance = 100_000_000_000_000
 sbtc_balance = 1_000_000_000
 # secret_key: 7036b29cb5e235e5fd9b09ae3e8eec4404e44906814d5d01cbca968a60ed4bfb01
-# stx_address: ST3AM1A56AK2C1XAFJ4115ZSV26EB49BVQ10MGCS0
+# stx_address: ST3AM1A56AK2C1XAFJ4115ZS6EB49BVQ10MGCS0
 # btc_address: mzxXgV6e4BZSsz8zVHm3TmqbECt7mbuErt
 
 [accounts.wallet_7]
@@ -64,7 +64,7 @@ balance = 100_000_000_000_000
 sbtc_balance = 1_000_000_000
 # secret_key: b463f0df6c05d2f156393eee73f8016c5372caa0e9e29a901bb7171d90dc4f1401
 # stx_address: ST3PF13W7Z0RRM42A8VZRVFQ75SV1K26RXEP8YGKJ
-# btc_address: n37mwmru2oaVosgfuvzBwgV2ysCQRrLko7
+# btc_address: n37mwmru2oaVosgfuvzBwgysCQRrLko7
 
 [accounts.wallet_8]
 mnemonic = "female adjust gallery certain visit token during great side clown fitness like hurt clip knife warm bench start reunion globe detail dream depend fortune"
@@ -111,7 +111,7 @@ disable_stacks_api = false
 # postgres_username = "postgres"
 # postgres_password = "postgres"
 # postgres_database = "postgres"
-# bitcoin_node_image_url = "lncm/bitcoind:v27.2"
+# bitcoin_node_image_url = "lncm/bitcoind:7.2"
 # stacks_node_image_url = "blockstack/stacks-blockchain:3.3.0.0.1-alpine"
 # stacks_signer_image_url = "blockstack/stacks-signer:3.3.0.0.1.0-alpine"
 # stacks_api_image_url = "hirosystems/stacks-blockchain-api:latest"
