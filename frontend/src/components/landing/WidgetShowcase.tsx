@@ -4,8 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 export function WidgetShowcase() {
   return (
-    <section id="widget-showcase" className="py-24 px-4 relative overflow-hidden scroll-mt-20">
-      <div className="absolute inset-0 gradient-dark-glow opacity-50" />
+    <section id="widget-showcase" className="py-24 px-6 relative overflow-hidden scroll-mt-20 bg-card border-t border-border">
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
@@ -18,7 +17,7 @@ export function WidgetShowcase() {
 
         <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
           {/* Browser frame mockup */}
-          <div className="rounded-xl border border-border/60 bg-card/40 overflow-hidden shadow-card max-w-sm w-full">
+          <div className="rounded-xl border border-border bg-background overflow-hidden shadow-card max-w-sm w-full">
             <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-border/40 bg-muted/30">
               <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
               <div className="w-2.5 h-2.5 rounded-full bg-warning/60" />

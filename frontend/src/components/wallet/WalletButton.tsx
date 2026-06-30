@@ -8,7 +8,6 @@ import {
   Check,
   ExternalLink,
   ChevronDown,
-  Zap,
   Shield,
   AlertTriangle,
 } from "lucide-react";
@@ -113,73 +112,60 @@ export function WalletButton({
         <DropdownMenuTrigger asChild>
           <motion.button
             className={cn(
-              "group relative flex items-center gap-3 px-4 py-2.5 rounded-xl",
-              isWrongNetwork 
-                ? "bg-gradient-to-r from-destructive/10 to-destructive/5 border border-destructive/30 hover:border-destructive/50"
-                : "bg-gradient-to-r from-success/10 to-success/5 border border-success/20 hover:border-success/40",
-              "text-sm font-medium transition-all duration-300",
-              variant === "compact" && "px-3 py-2",
+              "group flex items-center gap-2.5 rounded-xl border px-3 py-2 text-sm font-medium transition-colors",
+              isWrongNetwork
+                ? "border-destructive/40 bg-destructive/5 hover:bg-destructive/10"
+                : "border-border bg-card hover:bg-secondary",
               className
             )}
-            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
           >
-            {/* Glow effect */}
-            <div className={cn(
-              "absolute inset-0 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity",
-              isWrongNetwork ? "bg-destructive/5" : "bg-success/5"
-            )} />
-            
-            {/* Avatar */}
-            <div className={cn(
-              "relative flex items-center justify-center w-8 h-8 rounded-lg border",
-              isWrongNetwork 
-                ? "bg-destructive/20 border-destructive/30"
-                : "bg-success/20 border-success/30"
-            )}>
-              {isWrongNetwork ? (
-                <AlertTriangle className="w-4 h-4 text-destructive" />
-              ) : (
-                <Wallet className="w-4 h-4 text-success" />
-              )}
-              <div className={cn(
-                "absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-background",
-                isWrongNetwork ? "bg-destructive" : "bg-success"
-              )}>
-                <div className={cn(
-                  "w-full h-full rounded-full animate-ping opacity-75",
+            {/* Status dot — quiet by default, pings on hover */}
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span
+                className={cn(
+                  "absolute inline-flex h-full w-full rounded-full opacity-60 group-hover:animate-ping",
                   isWrongNetwork ? "bg-destructive" : "bg-success"
-                )} />
-              </div>
-            </div>
+                )}
+              />
+              <span
+                className={cn(
+                  "relative inline-flex h-2 w-2 rounded-full",
+                  isWrongNetwork ? "bg-destructive" : "bg-success"
+                )}
+              />
+            </span>
 
-            {/* Address & Network */}
-            <div className="flex flex-col items-start">
-              <span className={cn(
-                "font-semibold",
-                isWrongNetwork ? "text-destructive" : "text-foreground"
-              )}>
+            {isWrongNetwork ? (
+              <AlertTriangle className="h-4 w-4 shrink-0 text-destructive" />
+            ) : (
+              <Wallet className="h-4 w-4 shrink-0 text-muted-foreground" />
+            )}
+
+            <div className="flex flex-col items-start leading-tight">
+              <span className={cn("font-mono", isWrongNetwork ? "text-destructive" : "text-foreground")}>
                 {truncate(address, 4, 4)}
               </span>
               {showNetwork && variant !== "compact" && (
-                <span className={cn(
-                  "text-[10px] uppercase tracking-wider",
-                  isWrongNetwork ? "text-destructive/80" : "text-muted-foreground"
-                )}>
-                  {isWrongNetwork ? `Wrong Network (${walletNetwork})` : (REQUIRED_NETWORK === "mainnet" ? "Mainnet" : "Testnet")}
+                <span
+                  className={cn(
+                    "text-[10px] uppercase tracking-wider",
+                    isWrongNetwork ? "text-destructive/80" : "text-muted-foreground"
+                  )}
+                >
+                  {isWrongNetwork ? "Wrong network" : REQUIRED_NETWORK === "mainnet" ? "Mainnet" : "Testnet"}
                 </span>
               )}
             </div>
 
-            {/* Chevron */}
-            <ChevronDown 
+            <ChevronDown
               className={cn(
-                "w-4 h-4 transition-transform duration-200",
+                "h-4 w-4 shrink-0 transition-transform duration-200",
                 isWrongNetwork ? "text-destructive/60" : "text-muted-foreground",
                 isHovered && "rotate-180"
-              )} 
+              )}
             />
           </motion.button>
         </DropdownMenuTrigger>
@@ -226,10 +212,9 @@ export function WalletButton({
       onClick={handleConnect}
       disabled={isConnecting}
       className={cn(
-        "group relative flex items-center gap-3 px-5 py-2.5 rounded-xl overflow-hidden",
-        "bg-gradient-to-r from-orange-500 to-amber-500",
-        "text-white font-semibold text-sm",
-        "shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40",
+        "group relative flex items-center gap-2 px-5 py-2.5 rounded-xl",
+        "gradient-bitcoin text-primary-foreground font-semibold text-sm",
+        "shadow-glow hover:brightness-110",
         "disabled:opacity-70 disabled:cursor-not-allowed",
         "transition-all duration-300",
         variant === "compact" && "px-4 py-2",
@@ -238,14 +223,6 @@ export function WalletButton({
       whileHover={{ scale: isConnecting ? 1 : 1.02 }}
       whileTap={{ scale: isConnecting ? 1 : 0.98 }}
     >
-      {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
-      {/* Shine effect */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -inset-[100%] animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-      </div>
-
       {/* Content */}
       <div className="relative flex items-center gap-2">
         <AnimatePresence mode="wait">
@@ -264,10 +241,8 @@ export function WalletButton({
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
-              className="relative"
             >
               <Wallet className="w-4 h-4" />
-              <Zap className="absolute -top-1 -right-1 w-2.5 h-2.5 text-yellow-300" />
             </motion.div>
           )}
         </AnimatePresence>
